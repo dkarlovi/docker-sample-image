@@ -1,11 +1,13 @@
 # image building the executable
 FROM golang:alpine AS builder
-WORKDIR /go/src/app
-COPY . .
-RUN go get -d -v ./...
-RUN go install -v ./...
+
+COPY entry.go /go/src/entry/
+RUN cd /go/src/entry/ && go get -d -v ./... && go install -v ./...
+
+COPY hello.go /go/src/hello/
+RUN cd /go/src/hello/ && go get -d -v ./... && go install -v ./...
 
 # image holding the exeutable
 FROM scratch
-COPY --from=builder /go/bin/app /usr/bin/
-CMD ["app"]
+COPY --from=builder /go/bin/entry /go/bin/hello /usr/bin/
+CMD ["hello"]
