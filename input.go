@@ -11,7 +11,7 @@ func main() {
 
 	if (stat.Mode() & os.ModeCharDevice) == 0 {
 		fmt.Println("No STDIN to read from")
-		return
+		os.Exit(1)
 	}
 
 	reader := bufio.NewReader(os.Stdin)
